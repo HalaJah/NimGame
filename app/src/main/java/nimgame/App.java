@@ -11,9 +11,9 @@ import java.util.Scanner;
 
 public class App {
 
-    private static ArrayList<StringBuilder> toBinArrayList(ArrayList<Integer> list)
+    public static StringBuilder nimSum(ArrayList<Integer> list)
     {
-        ArrayList<StringBuilder> binary = new ArrayList<>();
+       /*  ArrayList<StringBuilder> binary = new ArrayList<>();
         StringBuilder element = null;
 
         for(int i = 0; i < list.size(); i++)
@@ -22,36 +22,66 @@ public class App {
             binary.add(element);
         }
 
-       Comparator<StringBuilder> comparator = (sb1, sb2) -> Integer.compare(sb1.length(), sb2.length());
-        StringBuilder max = Collections.max(binary, comparator);
-        int maxLength = max.length(); 
+         Comparator<StringBuilder> comparator = (sb1, sb2) -> Integer.compare(sb1.length(), sb2.length());
+        */
 
-        for(int j = 0; j < binary.size(); j++)
+
+        Integer max = Collections.max(list);
+        int maxLength = Integer.toBinaryString(max).length(); 
+
+        int xorSum = 0;
+
+        for(int i = 0; i < list.size(); i++)
         {
-            int elementLength = binary.get(j).length();
+            xorSum ^= list.get(i);
+        }
+        String binaryXorSum = Integer.toBinaryString(xorSum);
+        StringBuilder nimSum = new StringBuilder(binaryXorSum);
+            int xorSumLength = binaryXorSum.length();
 
-            if( elementLength < maxLength)
+            if( xorSumLength < maxLength)
             {
-                char[] zeros = new char[maxLength - elementLength];
+                char[] zeros = new char[maxLength - xorSumLength];
                 Arrays.fill(zeros, '0');
 
-                binary.get(j).insert(0, zeros);
+                nimSum.insert(0, zeros);
+                
+            }
+           
+        return nimSum;
+    }
+
+    public static ArrayList<Integer> zeroNimSum(ArrayList<Integer> list) 
+    {
+        StringBuilder nimSum = nimSum(list);
+        Integer max = Collections.max(list);
+        int maxIndex = list.indexOf(max);
+        StringBuilder maxSb = new StringBuilder(Integer.toBinaryString(max));
+
+        for(int i = 0; i < nimSum.length(); i++)
+        {
+            char nimChar = nimSum.charAt(i);
+            char maxSbChar = maxSb.charAt(i);
+            if(nimChar == '1')
+            {
+                if(maxSbChar == '1')
+                {
+                    maxSb.replace(i, i + 1, "0");
+                }
+                else
+                {
+                    maxSb.replace(i, i + 1, "1");
+                }
                 
             }
         }
-        
-        
-        return binary;
+
+        Integer maxNum = Integer.parseInt(maxSb.toString(), 2);
+
+        list.set(maxIndex, maxNum);
+
+        return list;
     }
-
-    public static StringBuilder nimSum()
-       {
-        
-
-
-
-        return null;
-       }
     public static void main(String[] args) {
        // k is num of piles
        int pileNumber = ThreadLocalRandom.current().nextInt(1, 6);
@@ -74,8 +104,14 @@ public class App {
        System.out.println("Hello " + playerName + " , I am a bot called Leo. I will be playing against you, trying to always win! Hit enter if you ready for the game:");
        in.nextLine();
        System.out.println(pebbles);
-       ArrayList<StringBuilder> binary = toBinArrayList(pebbles);
-       System.out.println(binary);
+       System.out.println(nimSum(pebbles));
+
+       if(Integer.parseInt(nimSum(pebbles).toString(),2) != 0)
+       {
+            System.out.println(zeroNimSum(pebbles));
+       }
+
+       
        
 
        if(pileNumber == 1)
