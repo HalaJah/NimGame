@@ -11,74 +11,34 @@ import java.util.Scanner;
 
 public class App {
 
-    public static StringBuilder nimSum(ArrayList<Integer> list)
+    public static Integer nimSum(ArrayList<Integer> list)
     {
-       /*  ArrayList<StringBuilder> binary = new ArrayList<>();
-        StringBuilder element = null;
-
-        for(int i = 0; i < list.size(); i++)
-        {
-            element = new StringBuilder(Integer.toBinaryString(list.get(i)));
-            binary.add(element);
-        }
-
-         Comparator<StringBuilder> comparator = (sb1, sb2) -> Integer.compare(sb1.length(), sb2.length());
-        */
-
-
-        Integer max = Collections.max(list);
-        int maxLength = Integer.toBinaryString(max).length(); 
-
+    
         int xorSum = 0;
 
         for(int i = 0; i < list.size(); i++)
         {
             xorSum ^= list.get(i);
         }
-        String binaryXorSum = Integer.toBinaryString(xorSum);
-        StringBuilder nimSum = new StringBuilder(binaryXorSum);
-            int xorSumLength = binaryXorSum.length();
-
-            if( xorSumLength < maxLength)
-            {
-                char[] zeros = new char[maxLength - xorSumLength];
-                Arrays.fill(zeros, '0');
-
-                nimSum.insert(0, zeros);
-                
-            }
+        
            
-        return nimSum;
+        return xorSum;
     }
 
-    public static ArrayList<Integer> zeroNimSum(ArrayList<Integer> list) 
+    public static ArrayList<Integer> alterPile(ArrayList<Integer> list) 
     {
-        StringBuilder nimSum = nimSum(list);
-        Integer max = Collections.max(list);
-        int maxIndex = list.indexOf(max);
-        StringBuilder maxSb = new StringBuilder(Integer.toBinaryString(max));
-
-        for(int i = 0; i < nimSum.length(); i++)
+        Integer nimSum = nimSum(list);
+        
+        for(int i = 0; i < list.size(); i++)
         {
-            char nimChar = nimSum.charAt(i);
-            char maxSbChar = maxSb.charAt(i);
-            if(nimChar == '1')
+            Integer element = list.get(i);
+            Integer xorElement = element^nimSum;
+            if( xorElement < element)
             {
-                if(maxSbChar == '1')
-                {
-                    maxSb.replace(i, i + 1, "0");
-                }
-                else
-                {
-                    maxSb.replace(i, i + 1, "1");
-                }
-                
+                list.set(i, xorElement);
+                break;
             }
         }
-
-        Integer maxNum = Integer.parseInt(maxSb.toString(), 2);
-
-        list.set(maxIndex, maxNum);
 
         return list;
     }
@@ -106,15 +66,15 @@ public class App {
        System.out.println(pebbles);
        System.out.println(nimSum(pebbles));
 
-       if(Integer.parseInt(nimSum(pebbles).toString(),2) != 0)
+       if(nimSum(pebbles) != 0)
        {
-            System.out.println(zeroNimSum(pebbles));
+            System.out.println(alterPile(pebbles));
        }
 
        
        
 
-       if(pileNumber == 1)
+       /* if(pileNumber == 1)
        {
         System.out.println("I'm Player A, I'll be removing " +  pebbles.get(0) + " pebbles out of the pile");
         pebbles.set(0, 0);
@@ -122,8 +82,7 @@ public class App {
         System.out.println(pebbles);
         System.out.println("Leo wins!");
        }
-
-    
+     */
 
 
 
