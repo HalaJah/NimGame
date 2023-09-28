@@ -11,6 +11,19 @@ import java.util.Scanner;
 
 public class App {
 
+    public static  Integer sum(ArrayList<Integer> list)
+    {
+        Integer sum = 0;
+        
+        for(int i = 0; i < list.size(); i++)
+        {
+            sum += list.get(i);
+        }
+
+        return sum;
+    }
+
+
     public static Integer nimSum(ArrayList<Integer> list)
     {
     
@@ -42,6 +55,15 @@ public class App {
 
         return list;
     }
+
+    public static ArrayList<Integer> userRemovePebbles(ArrayList<Integer> list, int pileNum, Integer pebblesNum)
+    {
+        Integer element = list.get(pileNum - 1);
+        Integer newElement = element - pebblesNum;
+
+        list.set(pileNum - 1, newElement);
+        return list;
+    } 
     public static void main(String[] args) {
        // k is num of piles
        int pileNumber = ThreadLocalRandom.current().nextInt(1, 6);
@@ -63,32 +85,34 @@ public class App {
        
        System.out.println("Hello " + playerName + " , I am a bot called Leo. I will be playing against you, trying to always win! Hit enter if you ready for the game:");
        in.nextLine();
+       
        System.out.println(pebbles);
        System.out.println(nimSum(pebbles));
 
-       if(nimSum(pebbles) != 0)
-       {
-            System.out.println(alterPile(pebbles));
-       }
+       ArrayList<Integer> list = new ArrayList<>();
+       list.add(9);
+       list.add(3);
+       list.add(10);
 
-       
-       
+       System.out.println(list);
 
-       /* if(pileNumber == 1)
-       {
-        System.out.println("I'm Player A, I'll be removing " +  pebbles.get(0) + " pebbles out of the pile");
-        pebbles.set(0, 0);
-
-        System.out.println(pebbles);
-        System.out.println("Leo wins!");
-       }
-     */
-
-
-
-
-
-
-       
+       if (nimSum(list) == 0) {
+        boolean isUserTurn = true;
+        do {
+            System.out.println(isUserTurn ? "User Turn" : "Bot Turn");
+            if (isUserTurn) {
+                int pileNum = in.nextInt();
+                in.nextLine(); // to consume the remaining newline
+                int pebblesNum = in.nextInt();
+                userRemovePebbles(list, pileNum, pebblesNum);
+            } else {
+                alterPile(list);
+            }
+            System.out.println(list);
+            isUserTurn = !isUserTurn;
+        } while (sum(list) != 0);
+        in.close();
+    }
+     
     }
 }
