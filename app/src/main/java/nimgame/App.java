@@ -89,30 +89,27 @@ public class App {
        System.out.println(pebbles);
        System.out.println(nimSum(pebbles));
 
-       ArrayList<Integer> list = new ArrayList<>();
+       /* ArrayList<Integer> list = new ArrayList<>();
        list.add(9);
        list.add(3);
        list.add(10);
 
-       System.out.println(list);
+       System.out.println(list); */
 
-       if (nimSum(list) == 0) {
-        boolean isUserTurn = true;
-        do {
-            System.out.println(isUserTurn ? "User Turn" : "Bot Turn");
-            if (isUserTurn) {
-                int pileNum = in.nextInt();
-                in.nextLine(); // to consume the remaining newline
-                int pebblesNum = in.nextInt();
-                userRemovePebbles(list, pileNum, pebblesNum);
-            } else {
-                alterPile(list);
-            }
-            System.out.println(list);
-            isUserTurn = !isUserTurn;
-        } while (sum(list) != 0);
-        in.close();
-    }
-     
-    }
+       boolean isUserTurn = nimSum(pebbles) == 0;
+       do {
+           System.out.println(isUserTurn ? "User Turn" : "Bot Turn");
+           if (isUserTurn) {
+               int pileNum = in.nextInt();
+               in.nextLine(); // to consume the remaining newline
+               int pebblesNum = in.nextInt();
+               userRemovePebbles(pebbles, pileNum, pebblesNum);
+           } else {
+               alterPile(pebbles);
+           }
+           System.out.println(pebbles);
+           isUserTurn = !isUserTurn;
+       } while (sum(pebbles) != 0);
+       in.close();
+    }       
 }
